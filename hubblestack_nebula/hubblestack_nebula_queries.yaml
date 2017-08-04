@@ -58,5 +58,5 @@ hourly:
     query_name: login_history
 minute: 
  - 
-   query: "SELECT t.unix_time AS query_time, uid, gid, username AS user, groupname AS 'group', command, time, history_file FROM users JOIN groups USING (gid) JOIN shell_history USING (uid) LEFT JOIN time as t WHERE time > strftime('%s', 'now', '-16 minutes');"
+   query: "SELECT t.unix_time AS query_time, uid, gid, username AS user, groupname AS 'group', command, time, history_file FROM users JOIN groups USING (gid) JOIN shell_history USING (uid) LEFT JOIN time as t WHERE time > strftime('%s', 'now', '-1 minute');"
    query_name: shell_history
