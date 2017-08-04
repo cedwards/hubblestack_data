@@ -56,7 +56,7 @@ hourly:
   - 
     query: "SELECT t.unix_time AS query_time, l.username AS user, l.tty, l.pid, l.type AS utmp_type, CASE l.type WHEN 1 THEN 'RUN_LVL' WHEN 2 THEN 'BOOT_TIME' WHEN 3 THEN 'NEW_TIME' WHEN 4 THEN 'OLD_TIME' WHEN 5 THEN 'INIT_PROCESS' WHEN 6 THEN 'LOGIN_PROCESS' WHEN 7 THEN 'USER_PROCESS' WHEN 8 THEN 'DEAD_PROCESS' ELSE l.type END AS utmp_type_name, l.host AS src, l.time FROM last AS l LEFT JOIN time AS t WHERE l.time > strftime('%s','now') - 3600;"
     query_name: login_history
-one_min: 
-  - 
-    query: "SELECT t.unix_time AS query_time, uid, gid, username AS user, groupname AS group, command, time, history_file FROM users JOIN groups USING (gid) JOIN shell_history USING (uid) LEFT JOIN time as t WHERE time > strftime('%s', 'now', '-1 minutes');"
-    query_name: shell_history
+minute: 
+ - 
+   query: "SELECT t.unix_time AS query_time, uid, gid, username AS user, groupname AS 'group', command, time, history_file FROM users JOIN groups USING (gid) JOIN shell_history USING (uid) LEFT JOIN time as t WHERE time > strftime('%s', 'now', '-16 minutes');"
+   query_name: shell_history
