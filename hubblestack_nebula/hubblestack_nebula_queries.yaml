@@ -49,6 +49,10 @@ fifteen_min:
   - 
     query: "SELECT t.unix_time AS query_time, h.md5 AS md5, p.pid AS process_id, name AS process, ltrim(address, ':f') AS address, port AS dest_port, p.path AS file_path, cmdline, p.on_disk, root, parent, CASE lp.protocol WHEN 6 THEN 'tcp' WHEN 17 THEN 'udp' ELSE lp.protocol END as transport FROM listening_ports AS lp LEFT JOIN processes AS p ON lp.pid=p.pid LEFT JOIN time AS t LEFT JOIN hash AS h ON h.path=p.path;"
     query_name: listening_procs
+  - 
+   query: "SELECT t.unix_time AS query_time, uid, gid, username AS user, groupname AS 'group', command, time, history_file FROM users JOIN groups USING (gid) JOIN shell_history USING (uid) LEFT JOIN time as t WHERE time > strftime('%s', 'now', '-16 minutes');"
+   query_name: shell_history
+
 hourly: 
   - 
     query: "SELECT t.unix_time AS query_time, c.event, c.minute, c.hour, c.day_of_month, c.month, c.day_of_week, c.command, c.path AS cron_file FROM crontab AS c JOIN time AS t;"
@@ -56,7 +60,3 @@ hourly:
   - 
     query: "SELECT t.unix_time AS query_time, l.username AS user, l.tty, l.pid, l.type AS utmp_type, CASE l.type WHEN 1 THEN 'RUN_LVL' WHEN 2 THEN 'BOOT_TIME' WHEN 3 THEN 'NEW_TIME' WHEN 4 THEN 'OLD_TIME' WHEN 5 THEN 'INIT_PROCESS' WHEN 6 THEN 'LOGIN_PROCESS' WHEN 7 THEN 'USER_PROCESS' WHEN 8 THEN 'DEAD_PROCESS' ELSE l.type END AS utmp_type_name, l.host AS src, l.time FROM last AS l LEFT JOIN time AS t WHERE l.time > strftime('%s','now') - 3600;"
     query_name: login_history
-minute: 
- - 
-   query: "SELECT t.unix_time AS query_time, uid, gid, username AS user, groupname AS 'group', command, time, history_file FROM users JOIN groups USING (gid) JOIN shell_history USING (uid) LEFT JOIN time as t WHERE time > strftime('%s', 'now', '-1 minute');"
-   query_name: shell_history
