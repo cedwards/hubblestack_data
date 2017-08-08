@@ -58,7 +58,9 @@ fifteen_min:
   -
    query: "SELECT t.unix_time AS query_time, user, tty, host, time, pid FROM logged_in_users JOIN time as t;"
    query_name: logged_in_users
-
+  -
+   query: "SELECT t.unix_time AS query_time, count(user) as connected_users FROM logged_in_users JOIN time as t WHERE type = 'user';"
+   query_name: connected_user_count
 hourly: 
   - 
     query: "SELECT t.unix_time AS query_time, c.event, c.minute, c.hour, c.day_of_month, c.month, c.day_of_week, c.command, c.path AS cron_file FROM crontab AS c JOIN time AS t;"
