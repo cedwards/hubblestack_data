@@ -55,6 +55,9 @@ fifteen_min:
   - 
    query: "SELECT t.unix_time AS query_time, uid, gid, username AS user, groupname AS 'group', command, time, history_file FROM users JOIN groups USING (gid) JOIN shell_history USING (uid) LEFT JOIN time as t WHERE time > strftime('%s', 'now', '-16 minutes');"
    query_name: shell_history
+  -
+   query: "SELECT t.unix_time AS query_time, user, tty, host, time, pid FROM logged_in_users JOIN time as t;"
+   query_name: logged_in_users
 
 hourly: 
   - 
